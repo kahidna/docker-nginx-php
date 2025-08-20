@@ -14,9 +14,11 @@ COPY ./supervisord.conf /etc/supervisor/conf.d/
 COPY ./app /var/www/app/
 
 RUN	\
-	BUILD_DEPS='software-properties-common wget gnupg lsb-release ca-certificates apt-transport-https software-properties-common gnupg2' \
+	BUILD_DEPS='software-properties-common wget gnupg' \
     && dpkg-reconfigure locales \
 	&& apt-get install --no-install-recommends -y $BUILD_DEPS \
+        && echo "en_US.UTF-8 UTF-8" > /etc/locale.gen \
+        && locale-gen \
     && wget -O - http://nginx.org/keys/nginx_signing.key | APT_KEY_DONT_WARN_ON_DANGEROUS_USAGE=noninteractive apt-key add - \
 	&& echo "deb http://nginx.org/packages/debian/ bookworm nginx" | tee -a /etc/apt/sources.list \
 	&& echo "deb-src http://nginx.org/packages/debian/ bookworm nginx" | tee -a /etc/apt/sources.list \
@@ -36,7 +38,7 @@ RUN	\
 
 COPY ./configs/nginx.conf ${NGINX_CONF_DIR}/nginx.conf
 COPY ./configs/app.conf ${NGINX_CONF_DIR}/sites-enabled/app.conf
-COPY ./configs/www.conf /etc/php/8.1/fpm/pool.d/www.conf
+COPY ./configs/www.conf /etc/php/8.0/fpm/pool.d/www.conf
 
 WORKDIR /var/www/app/
 
