@@ -38,7 +38,7 @@ RUN	\
 
 COPY ./configs/nginx.conf ${NGINX_CONF_DIR}/nginx.conf
 COPY ./configs/app.conf ${NGINX_CONF_DIR}/sites-enabled/app.conf
-COPY ./configs/www.conf /etc/php/8.0/fpm/pool.d/www.conf
+COPY ./configs/www.conf /etc/php/8.1/fpm/pool.d/www.conf
 
 WORKDIR /var/www/app/
 
